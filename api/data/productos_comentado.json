@@ -1,0 +1,75 @@
+"""================================================================================
+   DATOS SEMIALES: productros.json
+   Archivo: api/data/productos.json
+   Propósito: Almacena la "base de datos" del catálogo en formato JSON.
+              Los datos son efímeros (se pierden al reiniciar el servidor en Render free).
+              
+              Estructura esperada:
+              {
+                "siguiente_id": 11,
+                "productos": [
+                  {
+                    "id": 1,
+                    "nombre": "Audífonos inalámbricos",
+                    "descripcion": "Bluetooth 5.3...",
+                    "precio": 59.9,
+                    "stock": 25,
+                    "categoria": "Electrónica",
+                    "creado_en": "2026-01-15T10:00:00Z",
+                    "actualizado_en": "2026-01-15T10:00:00Z"
+                  },
+                  ...más productos...
+                ]
+              }
+              
+              NOTAS IMPORTANTES:
+              - Este archivo se lee y escribe mediante operaciones atómicas (ver api/repositorios/productos.py)
+              - En el plan free de Render, el sistema de archivos se reinicia periódicamente,
+                por lo que los cambios realizados en runtime se perderán al dormir/redesplegar.
+              - Para producción se debería usar una base de datos real (PostgreSQL, MongoDB).
+================================================================================ """
+{
+  "siguiente_id": 11,
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Audífonos inalámbricos",
+      "descripcion": "Bluetooth 5.3, estuche de carga y hasta 24 horas de batería.",
+      "precio": 59.9,
+      "stock": 25,
+      "categoria": "Electrónica",
+      "creado_en": "2026-01-15T10:00:00Z",
+      "actualizado_en": "2026-01-15T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "nombre": "Lámpara de escritorio",
+      "descripcion": "Luz LED regulable con brazo articulado y base metálica.",
+      "precio": 34.5,
+      "stock": 12,
+      "categoria": "Hogar",
+      "creado_en": "2026-01-16T11:30:00Z",
+      "actualizado_en": "2026-01-16T11:30:00Z"
+    },
+    {
+      "id": 3,
+      "nombre": "Camiseta básica",
+      "descripcion": "Algodón peinado, corte regular, disponible en varios colores.",
+      "precio": 19.99,
+      "stock": 40,
+      "categoria": "Ropa",
+      "creado_en": "2026-01-17T09:15:00Z",
+      "actualizado_en": "2026-01-17T09:15:00Z"
+    },
+    {
+      "id": 4,
+      "nombre": "Balón de fútbol",
+      "descripcion": "Balón tamaño oficial con superficie resistente para exterior.",
+      "precio": 24.0,
+      "stock": 18,
+      "categoria": "Deportes",
+      "creado_en": "2026-01-18T16:45:00Z",
+      "actualizado_en": "2026-01-18T16:45:00Z"
+    }
+  ]
+}
