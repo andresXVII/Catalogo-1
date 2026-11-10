@@ -7,7 +7,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 
-from api.config import FRONTEND_DIR, HOST, MAX_BODY_BYTES, PORT
+from api.config import HOST, MAX_BODY_BYTES, PORT
+from pathlib import Path
+ROOT_DIR = Path(__file__).resolve().parent.parent
 from api.errores import ApiError
 from api.rutas import resolver
 from api.seguridad import autenticar
@@ -158,25 +160,35 @@ class Manejador(BaseHTTPRequestHandler):
 
     # ------------------------------------------------------------- estáticos
     def _servir_estatico(self, camino: str) -> None:
-        relativo = "index.html" if camino in ("", "/") else camino.lstrip("/")
-        raiz = FRONTEND_DIR.resolve()
+        # Quitar barra inicial y decidir según prefijo
+        camino_limpio = camino.lstrip("/")
+        if camino_limpio == "" or camino_limpio == "index.html":
+            archivo_path = ROOT_DIR / "index.html"
+        elif camino_limpio.startswith("css/"):
+            archivo_path = ROOT_DIR / "css" / camino_limpio[4:]
+        elif camino_limpio.startswith("js/"):
+            archivo_path = ROOT_DIR / "js" / camino_limpio[3:]
+        elif camino_limpio.startswith("favicon/"):
+            archivo_path = ROOT_DIR / "favicon" / camino_limpio[8:]
+        else:
+            self._responder_texto(404, "Archivo no encontrado")
+            return
 
         try:
-            archivo = (raiz / relativo).resolve()
-            archivo.relative_to(raiz)
+            archivo_path.resolve().relative_to(ROOT_DIR)
         except (ValueError, OSError):
             self._responder_texto(404, "Archivo no encontrado")
             return
 
-        if not archivo.is_file():
+        if not archivo_path.is_file():
             self._responder_texto(404, "Archivo no encontrado")
             return
 
-        tipo = TIPOS_ESTATICOS.get(archivo.suffix.lower())
+        tipo = TIPOS_ESTATICOS.get(archivo_path.suffix.lower())
         if tipo is None:
-            tipo = mimetypes.guess_type(archivo.name)[0] or "application/octet-stream"
+            tipo = mimetypes.guess_type(archivo_path.name)[0] or "application/octet-stream"
 
-        contenido = archivo.read_bytes()
+        contenido = archivo_path.read_bytes()
         self.send_response(200)
         self.send_header("Content-Type", tipo)
         self.send_header("Content-Length", str(len(contenido)))

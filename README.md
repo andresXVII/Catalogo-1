@@ -2,6 +2,8 @@
 
 Actividad práctica del Módulo 3. Incluye una **API REST** para el catálogo de productos y un **formulario web** sencillo para administrarlo.
 
+🟢 **Desplegado en la nube:** https://catalogo-productos-6xh7.onrender.com
+
 El backend está hecho con Python y la biblioteca estándar, así que **no requiere instalar dependencias**. Los datos se guardan en un archivo JSON.
 
 ---
@@ -29,6 +31,8 @@ Si el puerto 8000 está ocupado:
 ```powershell
 $env:PORT=8001; py run.py
 ```
+
+> **Nota:** En Render el servicio puede tardar 30–60 segundos en responder la primera vez si está dormido. La URL pública es `https://catalogo-productos-6xh7.onrender.com`.
 
 ---
 

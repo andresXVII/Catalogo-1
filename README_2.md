@@ -1258,7 +1258,7 @@ Si el profesor entra después de un rato, la primera carga puede tardar. Es norm
 Abre en el navegador:
 
 ```text
-https://TU-SERVICIO.onrender.com/api/salud
+https://catalogo-productos-6xh7.onrender.com/api/salud
 ```
 
 Debe responder:
@@ -1267,19 +1267,25 @@ Debe responder:
 {"estado":"ok","servicio":"catalogo-api"}
 ```
 
+> Nota: En el plan free de Render el servicio puede tardar 30–60 segundos en responder la primera vez si está dormido. Si obtienes timeout, espera un momento e intenta de nuevo.
+
 ### 17.2 Verificar el frontend
 
 Abre:
 
 ```text
-https://TU-SERVICIO.onrender.com
+https://catalogo-productos-6xh7.onrender.com
 ```
 
 Debe cargar la pantalla de login.
 
 ### 17.3 Verificar login
 
-Usa las credenciales configuradas en Render.
+Usa las credenciales:
+
+| Correo | Contraseña |
+| --- | --- |
+| `admin@catalogo.com` | `admin123` |
 
 ### 17.4 Verificar CRUD
 
@@ -1291,7 +1297,23 @@ Usa las credenciales configuradas en Render.
 
 ### 17.5 Verificar con el script de pruebas
 
-El script usa `http://127.0.0.1:8000` por defecto. Para probar Render, cambia `BASE_URL` en `pruebas/probar_api.py` o crea una copia. Ten en cuenta que el script **crea y elimina** un producto; no afecta a los demás.
+Con el servidor en ejecución:
+
+```powershell
+py run.py
+```
+
+```powershell
+py pruebas/probar_api.py
+```
+
+> El script usa `BASE_URL = "http://127.0.0.1:8000"` por defecto. Para probar Render, edita `pruebas/probar_api.py` y cambia la línea 17 por:
+
+```python
+BASE_URL = "https://catalogo-productos-6xh7.onrender.com"
+```
+
+Ten en cuenta que el script **crea y elimina** un producto de prueba; al terminar verás los datos iniciales del repositorio.
 
 También puedes importar la colección de Postman y cambiar `base_url` por la URL de Render.
 
@@ -1300,7 +1322,7 @@ También puedes importar la colección de Postman y cambiar `base_url` por la UR
 Abre la consola del navegador en otra página y ejecuta:
 
 ```javascript
-fetch("https://TU-SERVICIO.onrender.com/api/salud")
+fetch("https://catalogo-productos-6xh7.onrender.com/api/salud")
   .then((r) => r.json())
   .then(console.log);
 ```
