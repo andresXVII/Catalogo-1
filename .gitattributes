@@ -1,0 +1,13 @@
+# Normaliza los finales de línea para que el proyecto funcione igual en
+# Windows (desarrollo) y Linux (Render).
+* text=auto
+*.py text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.html text eol=lf
+*.svg text eol=lf
+*.bat text eol=crlf

@@ -1,0 +1,5 @@
+# El proyecto usa solo la biblioteca estándar de Python.
+# No hay dependencias externas que instalar.
+#
+# Render ejecutará este archivo durante el build y pip terminará correctamente
+# aunque no haya paquetes.

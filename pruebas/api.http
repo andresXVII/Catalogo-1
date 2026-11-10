@@ -1,0 +1,80 @@
+# Pruebas de la API con VS Code REST Client
+# Ejecuta las peticiones EN ORDEN. El login y la creación guardan
+# su respuesta para reutilizar el token y el id del producto.
+
+@baseUrl = http://localhost:8000
+
+### 1. Login (público)
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@catalogo.com",
+  "password": "admin123"
+}
+
+### 2. Listar productos (público)
+GET {{baseUrl}}/api/productos
+
+### 3. Crear producto (JWT)
+# @name crear
+POST {{baseUrl}}/api/productos
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "nombre": "Producto de prueba {{$timestamp}}",
+  "descripcion": "Creado desde api.http",
+  "precio": 25.50,
+  "stock": 8,
+  "categoria": "Pruebas"
+}
+
+### 4. Obtener el producto creado (público)
+GET {{baseUrl}}/api/productos/{{crear.response.body.$.producto.id}}
+
+### 5. Actualizar el producto (JWT)
+PUT {{baseUrl}}/api/productos/{{crear.response.body.$.producto.id}}
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "nombre": "Producto de prueba actualizado",
+  "descripcion": "Actualizado desde api.http",
+  "precio": 29.99,
+  "stock": 12,
+  "categoria": "Pruebas"
+}
+
+### 6. Eliminar el producto (JWT)
+DELETE {{baseUrl}}/api/productos/{{crear.response.body.$.producto.id}}
+Authorization: Bearer {{login.response.body.$.token}}
+
+### ---------------------------------------------------------------
+### Casos de error
+GET {{baseUrl}}/api/productos/999999
+
+###
+POST {{baseUrl}}/api/productos
+Content-Type: application/json
+
+{
+  "nombre": "Sin token",
+  "descripcion": "Debe responder 401",
+  "precio": 10,
+  "stock": 1,
+  "categoria": "Pruebas"
+}
+
+###
+POST {{baseUrl}}/api/productos
+Authorization: Bearer {{login.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "nombre": "X",
+  "precio": -5,
+  "stock": -1,
+  "categoria": ""
+}

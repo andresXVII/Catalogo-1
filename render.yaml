@@ -1,0 +1,45 @@
+# Blueprint de Render para el Catálogo de productos.
+# Documentación: https://render.com/docs/blueprint-spec
+#
+# Al conectar el repositorio en Render, este archivo crea el servicio web
+# automáticamente. También puedes crear el servicio a mano desde el panel;
+# en ese caso usa los mismos valores que aparecen aquí.
+
+services:
+  - type: web
+    name: catalogo-productos
+    runtime: python
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    healthCheckPath: /api/salud
+    autoDeployTrigger: commit
+
+    envVars:
+      # Render inyecta PORT automáticamente. El servidor debe escuchar en
+      # todas las interfaces para aceptar el tráfico del proxy de Render.
+      - key: HOST
+        value: 0.0.0.0
+
+      # Misma versión declarada en .python-version.
+      - key: PYTHON_VERSION
+        value: 3.12.8
+
+      # Render genera un valor aleatorio y lo guarda de forma segura.
+      - key: JWT_SECRET
+        generateValue: true
+
+      # Credenciales del administrador de la demostración.
+      # ADMIN_PASSWORD se solicita en el panel y no se guarda en Git.
+      - key: ADMIN_EMAIL
+        value: admin@catalogo.com
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: ADMIN_NOMBRE
+        value: Administrador
+
+      # Vigencia del token en segundos (1 hora).
+      - key: JWT_TTL_SEGUNDOS
+        value: 3600
